@@ -1,3 +1,61 @@
 查阅资料发现需要在linux下安装运行文件
 于是进行安装
 分析RFC对DSR的规定
+用tree命令得到树状结构
+├── dsr-uu-0.2
+│   ├── ChangeLog
+│   ├── debug.c
+│   ├── debug.h
+│   ├── draft-ietf-manet-dsr-10.txt
+│   ├── dsr-ack.c
+│   ├── dsr-ack.h
+│   ├── dsr-dev.c
+│   ├── dsr-dev.h
+│   ├── dsr.h
+│   ├── dsr-io.c
+│   ├── dsr-io.h
+│   ├── dsr-module.c
+│   ├── dsr-opt.c
+│   ├── dsr-opt.h
+│   ├── dsr-pkt.c
+│   ├── dsr-pkt.h
+│   ├── dsr-rerr.c
+│   ├── dsr-rerr.h
+│   ├── dsr-rrep.c
+│   ├── dsr-rrep.h
+│   ├── dsr-rreq.c
+│   ├── dsr-rreq.h
+│   ├── dsr-rtc.h
+│   ├── dsr-rtc-simple.c
+│   ├── dsr-srt.c
+│   ├── dsr-srt.h
+│   ├── dsr-uu.sh
+│   ├── dsr-uu.spec
+│   ├── endian.c
+│   ├── LICENCE
+│   ├── link-cache.c
+│   ├── link-cache.h
+│   ├── list.h
+│   ├── maint-buf.c
+│   ├── maint-buf.h
+│   ├── Makefile
+│   ├── neigh.c
+│   ├── neigh.h
+│   ├── ns-2.28
+│   │   ├── Makefile.in
+│   │   ├── ns-default.tcl
+│   │   ├── ns-lib.tcl
+│   │   ├── ns-mobilenode.tcl
+│   │   └── roaming-node.tcl
+│   ├── ns-agent.cc
+│   ├── ns-agent.h
+│   ├── patches
+│   │   ├── ns-2.28-aodvuu-0.9.1-dsruu-pre.patch
+│   │   ├── ns-2.28-dsruu-0.1.patch
+│   │   └── ns-2.29-aodv-uu-0.9.1-dsr-uu-0.2-oolsr-0.99.15.patch
+│   ├── README
+│   ├── send-buf.c
+│   ├── send-buf.h
+│   ├── tbl.h
+│   └── timer.h
+
