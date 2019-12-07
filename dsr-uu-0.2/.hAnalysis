@@ -1,0 +1,120 @@
+Timer.h   定义DSRUUTime计时器 getset
+List.h	  链表
+Tbl.h	  链表 返回链表头、判断空、满，判断是否为头 DSR读写锁  支持前后添加，查找，删除
+struct tbl {
+	list_t head;
+	volatile unsigned int len;
+	volatile unsigned int max_len;
+#ifdef __KERNEL__
+	rwlock_t lock;
+#endif
+};
+Maint-buf.h  定义函数 
+Link-cache.h  link-cache.c里的函数
+struct lc_graph {
+	struct tbl nodes;
+	struct tbl links;
+	struct lc_node *src;
+#ifdef __KERNEL__
+	struct timer_list timer;
+	rwlock_t lock;
+#endif
+};                    
+Dsr-pkt.h 定义DSR包报文格式
+struct dsr_pkt {
+	struct in_addr src;	/* IP level data */   源ip    struct in_addr {
+	struct in_addr dst;					目的ip	    in_addr_t s_addr;
+	struct in_addr nxt_hop;			下一跳ip		};
+	struct in_addr prv_hop;		上一跳ip   表示一个32位的IPv4地址。in_addr_t一般
+	int flags;						为32位的unsigned int，其字节顺序为网络字节序，
+	int salvage;	即该无符号数采用大端字节序。每8位表示一个IP地址中的一个数值。
+#ifdef NS2
+	union {
+		struct hdr_mac *ethh;
+		unsigned char *raw;
+	} mac;
+	struct hdr_ip ip_data;
+	union {
+		struct hdr_ip *iph;
+		char *raw;
+	} nh;
+#else
+	union {
+		struct ethhdr *ethh;
+		char *raw;
+	} mac;
+	union {
+		struct iphdr *iph;
+		char *raw;
+	} nh;
+	char ip_data[60];
+#endif
+	struct {
+		union {
+			struct dsr_opt_hdr *opth;
+			char *raw;
+		};		
+		char *tail, *end;  
+	} dh;
+		
+	int num_rrep_opts, num_rerr_opts, num_rreq_opts, num_ack_opts;
+	struct dsr_srt_opt *srt_opt;
+	struct dsr_rreq_opt *rreq_opt;	/* Can only be one */
+	struct dsr_rrep_opt *rrep_opt[MAX_RREP_OPTS];
+	struct dsr_rerr_opt *rerr_opt[MAX_RERR_OPTS];
+	struct dsr_ack_opt *ack_opt[MAX_ACK_OPTS];
+	struct dsr_ack_req_opt *ack_req_opt;
+	struct dsr_srt *srt;	/* Source route */
+
+
+	int payload_len;
+#ifdef NS2
+	AppData *payload;
+	Packet *p;
+#else
+	char *payload;
+	struct sk_buff *skb;
+#endif
+
+}
+#Include<ip.h>
+struct iphdr {
+  #if defined(__LITTLE_ENDIAN_BITFIELD)		小端模式下
+      __u8    ihl:4,		首部长度(4位)
+          version:4;		ip协议版本IPv4
+  #elif defined (__BIG_ENDIAN_BITFIELD)   	大端模式下
+      __u8    version:4,
+          ihl:4;
+  #else
+  #error  "Please fix <asm/byteorder.h>"
+  #endif
+     __u8    tos;			  	8位服务类型字段
+     __be16  tot_len;			16位IP数据报总长度
+     __be16  id;				16位标识字段（唯一表示主机发送的每一分数据报）
+     __be16  frag_off;			(3位分段标志+13位分段偏移数)
+     __u8    ttl;				8位数据报生存时间
+     __u8    protocol;		协议字段（8位）
+     __sum16 check;			16位首部校验
+     __be32  saddr;			源IP地址
+     __be32  daddr;			目的IP地址
+     /*The options start here. */
+ };
+
+#include<if_packet.h>
+
+
+
+#include<if_ether.h>
+struct ethhdr
+{
+    unsigned char h_dest[ETH_ALEN]; //目的MAC地址
+     
+    unsigned char h_source[ETH_ALEN]; //源MAC地址
+     
+    __u16 h_proto ; //网络层所使用的协议类型 16位
+}__attribute__((packed))  //用于告诉编译器不要对这个结构体中的缝隙部分进行填充操作；
+
+
+
+
+Dsr.opt.h struct dsr-opt-hdr
